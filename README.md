@@ -2,6 +2,9 @@
 
 # StretchText
 
+**Install page:** https://rekty.github.io/stretchtext/ — the download, a demo you can click before
+installing, and the setup steps.
+
 A browser extension that turns any web page into [stretchtext](https://en.wikipedia.org/wiki/StretchText):
 the short version loads first, and a click grows one phrase right where it stands. Click it again
 and it shrinks back. Readers sign in and spend **their own Pollen**, never the developer's.
@@ -27,8 +30,8 @@ and open only the ones you need.
 
 ## Install
 
-1. Download [dist/stretchtext-0.1.0.zip](dist/stretchtext-0.1.0.zip) and unzip it, or clone this
-   repository.
+1. Download [dist/stretchtext-0.1.0.zip](dist/stretchtext-0.1.0.zip) from the
+   [install page](https://rekty.github.io/stretchtext/) and unzip it, or clone this repository.
 2. Open `chrome://extensions`, enable **Developer mode**, choose **Load unpacked**, and select the
    unzipped folder.
 3. Click the StretchText icon → **Connect Pollen** → enter the code at
