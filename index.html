@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>StretchText — any page, at the length you want</title>
+    <meta
+      name="description"
+      content="A browser extension that turns any web page into stretchtext: skim the short version, click a dotted phrase to grow it in place. Spends your own Pollen."
+    />
+    <link rel="icon" href="icons/icon128.png" />
+    <link rel="stylesheet" href="content/stretch.css" />
+    <style>
+      :root {
+        color-scheme: dark;
+        --ink: #f4f4f7;
+        --muted: #a0a0ad;
+        --line: rgba(255, 255, 255, 0.12);
+        --card: #1e1f25;
+        --violet: #6f5dff;
+        --cyan: #27d4cd;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 56px 20px 80px;
+        background:
+          radial-gradient(900px 420px at 78% -10%, rgba(111, 93, 255, 0.22), transparent 70%),
+          radial-gradient(700px 380px at 8% 0%, rgba(39, 212, 205, 0.14), transparent 70%),
+          #151519;
+        color: var(--ink);
+        font: 16px/1.65 system-ui, -apple-system, "Segoe UI", sans-serif;
+      }
+      main {
+        max-width: 720px;
+        margin: 0 auto;
+      }
+      .badge {
+        display: block;
+        width: 176px;
+        margin-bottom: 22px;
+      }
+      h1 {
+        margin: 0 0 10px;
+        font-size: clamp(30px, 5vw, 44px);
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+      }
+      .lede {
+        margin: 0 0 26px;
+        font-size: 18px;
+        color: #d8d8e0;
+        max-width: 56ch;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 40px;
+      }
+      a.button {
+        display: inline-block;
+        padding: 11px 18px;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        color: var(--ink);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      a.button.primary {
+        border: 0;
+        color: #10101a;
+        background: linear-gradient(95deg, var(--violet) 0%, var(--cyan) 100%);
+      }
+      a.button:hover {
+        filter: brightness(1.08);
+      }
+      h2 {
+        margin: 44px 0 12px;
+        font-size: 20px;
+        letter-spacing: 0.01em;
+      }
+      .demo {
+        padding: 22px 24px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--card);
+      }
+      .demo p {
+        margin: 0 0 14px;
+      }
+      .demo p:last-of-type {
+        margin-bottom: 0;
+      }
+      .demo-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 12px;
+        margin-top: 18px;
+        padding-top: 16px;
+        border-top: 1px solid var(--line);
+      }
+      .demo-bar button {
+        padding: 9px 16px;
+        border-radius: 9px;
+        border: 0;
+        font: inherit;
+        font-weight: 600;
+        color: #10101a;
+        background: linear-gradient(95deg, var(--violet) 0%, var(--cyan) 100%);
+        cursor: pointer;
+      }
+      .demo-bar button.ghost {
+        background: none;
+        border: 1px solid var(--line);
+        color: var(--muted);
+        font-weight: 400;
+      }
+      .demo-bar span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+      ol {
+        padding-left: 20px;
+      }
+      li {
+        margin-bottom: 10px;
+      }
+      code {
+        padding: 2px 6px;
+        border-radius: 6px;
+        background: #26262c;
+        font: 13px ui-monospace, Menlo, monospace;
+      }
+      footer {
+        margin-top: 52px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 14px;
+      }
+      a {
+        color: var(--cyan);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Any page, at the length you want.</h1>
+      <p class="lede">
+        StretchText turns a web page into stretchtext: the article arrives short, and a click grows
+        one phrase right where it stands. Click it again and it shrinks back. No separate reader,
+        no summary panel, no hopping to another tab.
+      </p>
+
+      <div class="actions">
+        <a class="button primary" href="dist/stretchtext-0.1.0.zip">Download the extension</a>
+        <a class="button" href="https://github.com/rekty/stretchtext">Source on GitHub</a>
+      </div>
+
+      <h2>Try the shape of it</h2>
+      <div class="demo">
+        <p>
+          In 1967 Ted Nelson described stretchtext: text that grows where the reader wants more and
+          shrinks back where they don't. Writing every level by hand was too much work, so it never
+          caught on. Generated text makes it cheap, and the idea is back.
+        </p>
+        <p>
+          The web is the obvious place for it. Every article arrives at one fixed length: too long
+          if you already know the topic, too short if you don't. A reader who could open a single
+          paragraph and close the rest would read a sixth of the words, according to the author of
+          cc-stretch, a Claude Code plugin that does exactly this to Claude's replies.
+        </p>
+        <p>
+          StretchText is a browser extension for that. Open any article, press Alt+S, and the page
+          is rewritten as a short version where every sentence still says what it said. Dotted
+          phrases grow the detail back in place; click them again and the page is short again.
+          Restore puts the original page back, links and all, because the original nodes are kept,
+          not re-rendered.
+        </p>
+        <div class="demo-bar">
+          <button id="stretch">Stretch this demo</button>
+          <button id="restore" class="ghost">Restore</button>
+          <span id="note">Dotted phrases come from the real engine, with spans fixed by hand.</span>
+        </div>
+      </div>
+
+      <h2>How it works</h2>
+      <ol>
+        <li>
+          On activation the extension collects the readable paragraphs of the page — the ones a
+          person would actually read — and sends their text to a Pollinations text model in one
+          request.
+        </li>
+        <li>
+          The model returns each paragraph as spans: the quote that stays, and the phrases that can
+          grow, each with the detail it hides. Nothing is invented; the detail is the original
+          wording.
+        </li>
+        <li>
+          The engine swaps each paragraph for its short version, keeping the original nodes in
+          memory. Clicking a dotted phrase inserts its detail after itself; clicking again removes
+          it; <code>Alt</code>+<code>S</code> restores the page untouched.
+        </li>
+      </ol>
+
+      <h2>Install</h2>
+      <ol>
+        <li>Download the zip above and unzip it, or clone the repository.</li>
+        <li>
+          Open <code>chrome://extensions</code>, turn on <b>Developer mode</b>, choose <b>Load
+          unpacked</b>, and pick the unzipped folder.
+        </li>
+        <li>
+          Click the StretchText icon and choose <b>Connect Pollen</b>. Enter the code at
+          enter.pollinations.ai/device — the key it issues spends only your own Pollen, with the
+          budget and expiry you approve.
+        </li>
+        <li>Open any article and press <code>Alt</code>+<code>S</code>.</li>
+      </ol>
+
+      <h2>What it costs</h2>
+      <p>
+        One page is one text request: a few thousandths of a Pollen with the default model, and free
+        models cost nothing. Results are cached per browser session, so stretching and restoring the
+        same page twice is free. Models marked paid on the list need a funded balance; the default
+        is not one of them.
+      </p>
+
+      <footer>
+        <a href="https://pollinations.ai/?ref=badge">
+          <img
+            src="https://raw.githubusercontent.com/pollinations/pollinations/main/packages/ui/src/brand/badge-made-with.svg"
+            alt="Made with pollinations.ai"
+            width="176"
+          />
+        </a>
+        <p>Built for the Pollinations quest on stretchtext. Reads with your own Pollen.</p>
+      </footer>
+    </main>
+
+    <script src="shared/engine.js"></script>
+    <script>
+      // Demo spans: hand-written so the demo page never spends Pollen. Each set
+      // is matched to its paragraph by the paragraph's opening words, because
+      // the engine collects every readable block on the page, not just these.
+      const FIXTURE = [
+        {
+          start: "In 1967 Ted Nelson",
+          spans: [
+            { s: "In 1967 Ted Nelson described stretchtext:" },
+            {
+              s: "text that grows where the reader wants more.",
+              more: "It shrinks back where the reader doesn't want it.",
+            },
+            {
+              s: "Writing every level by hand was too much work, so it never caught on.",
+              more: "Generated text makes it cheap, and the idea is back.",
+            },
+          ],
+        },
+        {
+          start: "The web is the obvious place",
+          spans: [
+            { s: "The web is the obvious place for it." },
+            {
+              s: "Every article arrives at one fixed length.",
+              more: "Too long if you already know the topic, too short if you don't.",
+            },
+            {
+              s: "cc-stretch already does this to Claude's replies.",
+              more: "Its author now reads about a sixth of the words.",
+            },
+          ],
+        },
+        {
+          start: "StretchText is a browser extension",
+          spans: [
+            { s: "StretchText is a browser extension for that." },
+            {
+              s: "Open any article, press Alt+S, and the page is rewritten in place.",
+              more: "Every sentence still says what it said.",
+            },
+            {
+              s: "Dotted phrases grow the detail back where they stand; click again to shrink them.",
+              more: "Restore puts the original page back, links and all.",
+            },
+          ],
+        },
+      ];
+
+      const provider = async (texts) =>
+        texts.map(
+          (text) => FIXTURE.find((entry) => text.startsWith(entry.start))?.spans || [],
+        );
+      const note = document.getElementById("note");
+
+      document.getElementById("stretch").onclick = async () => {
+        const result = await STXEngine.stretch(provider);
+        note.textContent =
+          result.state === "stretched"
+            ? `${result.blocks} paragraphs, ${result.saved}% fewer words. Click a dotted phrase.`
+            : "Nothing left to stretch — hit Restore first.";
+      };
+
+      document.getElementById("restore").onclick = () => {
+        STXEngine.restore();
+        note.textContent = "Original restored, node for node.";
+      };
+
+      // #stretched opens the demo already short, with one phrase grown, so the
+      // page can be screenshotted without a click.
+      if (location.hash === "#stretched") {
+        STXEngine.stretch(provider).then(() =>
+          document.querySelector(".demo .stx-grow")?.click(),
+        );
+      }
+    </script>
+  </body>
+</html>

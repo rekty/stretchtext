@@ -1,0 +1,63 @@
+/* The short version is plain text; anything growable is a dotted phrase that
+   grows its detail right after itself. */
+.stx-block {
+  line-height: 1.6;
+}
+
+/* Reads as prose: a dotted underline is the only mark at rest, so a grown
+   phrase still looks like a sentence, not a button. */
+.stx-grow {
+  display: inline;
+  cursor: pointer;
+  border-bottom: 2px dotted color-mix(in srgb, currentColor 55%, transparent);
+}
+
+.stx-grow:hover,
+.stx-grow:focus-visible {
+  border-bottom-color: currentColor;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+.stx-grow:focus-visible {
+  outline: 2px solid #6f5dff;
+  outline-offset: 1px;
+}
+
+.stx-grow[aria-expanded="true"] {
+  border-bottom-style: solid;
+}
+
+.stx-more {
+  opacity: 0;
+  transition: opacity 140ms ease-out;
+}
+
+.stx-more.stx-in {
+  opacity: 1;
+}
+
+.stx-pill {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 2147483647;
+  max-width: min(360px, calc(100vw - 32px));
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: #1b1c22;
+  color: #f4f4f6;
+  font: 13px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 160ms ease-out,
+    transform 160ms ease-out;
+  pointer-events: none;
+}
+
+.stx-pill.stx-show {
+  opacity: 1;
+  transform: none;
+}

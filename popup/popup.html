@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="popup.css" />
+    <title>StretchText</title>
+  </head>
+  <body>
+    <header>
+      <h1>StretchText</h1>
+      <p class="pitch">Skim the short version. Grow what you want.</p>
+    </header>
+
+    <section id="signin" hidden>
+      <p class="note">Sign in and this page is read with your own Pollen.</p>
+      <button id="connect" class="primary">Connect Pollen</button>
+      <div id="device" hidden>
+        <p class="note">Enter this code at enter.pollinations.ai/device</p>
+        <p id="usercode" class="code"></p>
+        <button id="open-device" class="ghost">Open the page</button>
+        <p class="note" id="waiting">Waiting for approval…</p>
+      </div>
+      <details>
+        <summary>Already have an sk_ key?</summary>
+        <input id="key" type="password" placeholder="sk_…" autocomplete="off" />
+        <button id="paste" class="ghost">Use this key</button>
+      </details>
+    </section>
+
+    <section id="ready" hidden>
+      <button id="stretch" class="primary">Stretch this page</button>
+      <p class="note">or press <kbd>Alt</kbd>+<kbd>S</kbd></p>
+      <label class="row">
+        Model
+        <select id="model"></select>
+      </label>
+      <p class="note" id="result"></p>
+      <button id="signout" class="ghost">Disconnect</button>
+    </section>
+
+    <footer>
+      A whole page costs a few thousandths of a Pollen with the default model.
+    </footer>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
