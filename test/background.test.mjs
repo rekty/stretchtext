@@ -97,7 +97,10 @@ test("asks for a device code and connects on approval", async () => {
   const connected = await worker.send({ type: "auth:connect" });
   assert.equal(connected.userCode, "ABCD-1234");
   assert.match(connected.verify, /user_code=ABCD-1234$/);
-  assert.equal(JSON.parse(worker.calls[0].options.body).client_id, undefined);
+  // The device request must carry the extension's own app key when one is
+  // configured, so the consent screen can name the app and attribute traffic.
+  const configured = read("../background.js").match(/const APP_KEY = "([^"]*)"/)?.[1] || "";
+  assert.equal(JSON.parse(worker.calls[0].options.body).client_id, configured || undefined);
 
   assert.equal((await worker.send({ type: "auth:status" })).state, "pending");
   assert.equal((await worker.send({ type: "auth:status" })).state, "connected");

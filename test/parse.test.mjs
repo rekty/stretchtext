@@ -47,6 +47,37 @@ test("drops empty spans and empty detail", () => {
   assert.deepEqual(parse(reply, 1), [[{ s: "keep" }, { s: "plain" }]]);
 });
 
+test("reads every blocks array when the model repeats the key", () => {
+  // Observed from a live reply: one object, the key emitted once per chunk.
+  // JSON.parse keeps only the last one, which silently drops paragraphs.
+  const reply = [
+    '{"blocks":[{"i":1,"spans":[{"s":"First stays."}]}],"blocks":[',
+    '{"i":2,"spans":[{"s":"Second stays.","more":"Detail here."}]}]}',
+  ].join("");
+
+  assert.deepEqual(parse(reply, 2), [
+    [{ s: "First stays." }],
+    [{ s: "Second stays.", more: "Detail here." }],
+  ]);
+});
+
+test("ignores prose before and after the JSON", () => {
+  const reply = 'Here you go:\n{"blocks":[{"i":1,"spans":[{"s":"Body."}]}]}\nHope that helps.';
+  assert.deepEqual(parse(reply, 1), [[{ s: "Body." }]]);
+});
+
+test("accepts a bare blocks array", () => {
+  const reply = '[{"i":1,"spans":[{"s":"Bare."}]}]';
+  assert.deepEqual(parse(reply, 1), [[{ s: "Bare." }]]);
+});
+
+test("brackets inside strings do not truncate the array", () => {
+  const reply = JSON.stringify({
+    blocks: [{ spans: [{ s: "a [bracket] stays", more: "and a } brace too." }] }],
+  });
+  assert.deepEqual(parse(reply, 1), [[{ s: "a [bracket] stays", more: "and a } brace too." }]]);
+});
+
 test("throws on a reply without JSON", () => {
   assert.throws(() => parse("Sorry, I can't do that.", 1), /did not reply with JSON/);
 });

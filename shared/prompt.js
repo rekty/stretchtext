@@ -30,6 +30,66 @@
     return more ? { s, more } : { s };
   }
 
+  // The substring from `start` to the bracket that closes it, ignoring
+  // brackets inside strings. A model that keeps talking after the JSON, or
+  // that repeats a key, cannot truncate what we read.
+  function balanced(text, start) {
+    const open = text[start];
+    const close = open === "[" ? "]" : "}";
+    let depth = 0;
+    let inString = false;
+    let escaped = false;
+    for (let i = start; i < text.length; i += 1) {
+      const ch = text[i];
+      if (inString) {
+        if (escaped) escaped = false;
+        else if (ch === "\\") escaped = true;
+        else if (ch === '"') inString = false;
+        continue;
+      }
+      if (ch === '"') inString = true;
+      else if (ch === open) depth += 1;
+      else if (ch === close) {
+        depth -= 1;
+        if (depth === 0) return text.slice(start, i + 1);
+      }
+    }
+    return text.slice(start);
+  }
+
+  // Every "blocks" array in the reply, in order. Some models answer a long
+  // request as one object with the key repeated (JSON.parse would keep only
+  // the last one, silently dropping paragraphs), so read each occurrence.
+  function blocksFrom(text) {
+    const found = [];
+    const key = /"blocks"\s*:\s*\[/g;
+    let match;
+    while ((match = key.exec(text))) {
+      const start = match.index + match[0].length - 1;
+      const arrayText = balanced(text, start);
+      try {
+        const list = JSON.parse(arrayText);
+        if (Array.isArray(list)) found.push(...list);
+      } catch {
+        // Skip an unreadable array and keep the rest.
+      }
+      key.lastIndex = start + arrayText.length;
+    }
+    if (found.length) return found;
+
+    // No blocks key at all: accept a bare array, or an object holding one.
+    const start = text.search(/[[{]/);
+    if (start < 0) return found;
+    try {
+      const value = JSON.parse(balanced(text, start));
+      if (Array.isArray(value)) return value;
+      const only = Object.values(value).find((item) => Array.isArray(item));
+      return only || found;
+    } catch {
+      return found;
+    }
+  }
+
   // Returns one span array per input text, so the caller can index by block.
   function parse(raw, count) {
     const text = String(raw || "")
@@ -37,11 +97,8 @@
       .replace(/^```(?:json)?/i, "")
       .replace(/```$/, "")
       .trim();
-    const start = text.indexOf("{");
-    const end = text.lastIndexOf("}");
-    if (start < 0 || end <= start) throw new Error("model did not reply with JSON");
-    const data = JSON.parse(text.slice(start, end + 1));
-    const blocks = Array.isArray(data.blocks) ? data.blocks : [];
+    if (!/[[{]/.test(text)) throw new Error("model did not reply with JSON");
+    const blocks = blocksFrom(text);
     const out = Array.from({ length: count }, () => []);
     // Place by the echoed paragraph number, so one skipped block cannot shift
     // another paragraph's spans onto the wrong text. Fall back to order.

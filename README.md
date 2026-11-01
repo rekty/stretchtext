@@ -30,7 +30,7 @@ and open only the ones you need.
 
 ## Install
 
-1. Download [dist/stretchtext-0.1.0.zip](dist/stretchtext-0.1.0.zip) from the
+1. Download [dist/stretchtext-0.1.1.zip](dist/stretchtext-0.1.1.zip) from the
    [install page](https://rekty.github.io/stretchtext/) and unzip it, or clone this repository.
 2. Open `chrome://extensions`, enable **Developer mode**, choose **Load unpacked**, and select the
    unzipped folder.
@@ -40,6 +40,17 @@ and open only the ones you need.
 
 Chromium browsers (Chrome, Edge, Brave, Arc) accept the unpacked folder as is. Firefox needs the
 same files with `background.scripts` instead of a service worker; that build is not shipped yet.
+
+### Reviewer quick test
+
+Five minutes, no build step: the folder in this repository is the extension that runs.
+
+1. `chrome://extensions` → **Developer mode** → **Load unpacked** → pick the unzipped folder.
+2. Click the icon → **Connect Pollen** → approve the code at enter.pollinations.ai/device. The popup
+   then lists the live text models, so the device flow and the key both work.
+3. Open a long article and press **Alt+S**. Paragraphs become the short version; a dotted phrase
+   grows its detail on click and shrinks again on the next click.
+4. Press **Alt+S** once more. The page comes back node for node, links still working.
 
 ## How it works
 

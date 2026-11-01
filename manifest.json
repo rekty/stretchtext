@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "StretchText",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Read any web page as stretchtext: skim the short version, click a dotted phrase to grow it where it stands, click again to shrink it. Spends your own Pollen.",
   "permissions": ["storage", "activeTab", "scripting"],
   "host_permissions": [

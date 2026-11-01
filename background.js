@@ -7,7 +7,7 @@ const GEN = "https://gen.pollinations.ai";
 const ENTER = "https://enter.pollinations.ai";
 // A pk_ key from https://enter.pollinations.ai/keys → Apps attributes traffic to
 // its owner on the consent screen. Empty still signs in, just unattributed.
-const APP_KEY = "";
+const APP_KEY = "pk_OHEztfDm6JCbDSWT";
 const DEFAULT_MODEL = "openai/gpt-5.4-nano";
 const SCRIPTS = ["shared/engine.js", "shared/prompt.js", "content/stretch.js"];
 const MAX_TOKENS = 2400;
