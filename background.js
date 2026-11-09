@@ -139,6 +139,9 @@ async function spans(texts) {
   if (!res.ok) throw httpError(res, data);
   const reply = data.choices?.[0]?.message?.content || "";
   const parsed = STXPrompt.parse(reply, texts.length);
+  // A reply cut off at max_tokens parses to nothing. Report it instead of
+  // caching it, so the reader can try again.
+  if (!parsed.some((block) => block.length)) throw new Error("the model's reply was empty or cut off; try again");
   await session.set({ [digest]: parsed });
   return parsed;
 }
